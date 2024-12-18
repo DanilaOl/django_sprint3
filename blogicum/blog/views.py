@@ -12,7 +12,11 @@ def index(request):
         Q(is_published=True)
         & Q(category__is_published=True)
         & Q(pub_date__lte=timezone.now())
-    ).order_by('-pub_date').all()[0:5]
+    ).order_by('-pub_date').select_related(
+        'category',
+        'location',
+        'author'
+    ).all()[0:5]
 
     context = {'post_list': post_list}
 
